@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Generator</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1 class="heading">Text Generator</h1>
+            <div class="input-group">
+                <label for="prime_phrase" class="label">Text</label>
+                <input type="text" id="prime_phrase" class="input" placeholder="Enter text">
+            </div>
+            <div class="input-group">
+                <label for="text_length" class="label">Length</label>
+                <input type="number" id="text_length" class="input" value="100">
+            </div>
+            <button onclick="generateText()" class="btn">Generate</button>
+            <div class="output">
+                <h2 class="output-heading">Generated Text:</h2>
+                <p id="generated_text" class="generated-text">Your generated text will appear here.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function generateText() {
+            const primePhrase = document.getElementById('prime_phrase').value;
+            const textLength = document.getElementById('text_length').value;
+            const response = await fetch('/generate_text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prime_phrase: primePhrase, text_length: textLength }),
+            });
+            const data = await response.json();
+            document.getElementById('generated_text').innerText = data.generated_text;
+        }
+    </script>
+</body>
+</html>
